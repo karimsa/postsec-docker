@@ -30,3 +30,6 @@ RUN apt-get install -y imagemagick php-imagick
 
 # define that the http port will be used
 EXPOSE 80
+
+# run till apache dies
+CMD apachectl -DFOREGROUND
