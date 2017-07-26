@@ -9,7 +9,7 @@ FROM ubuntu:16.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 # copy over key temporarily
-COPY php.key /tmp/php.key
+COPY config/php-ppa.key /tmp/php.key
 
 # fetch packages
 RUN apt-get update
@@ -22,9 +22,11 @@ RUN add-apt-repository -y 'deb http://ppa.launchpad.net/ondrej/php/ubuntu xenial
 RUN apt-key add /tmp/php.key
 RUN apt-get update -y
 
-# install packages
-RUN apt-get install -y \
-      apache2 \
-      mariadb-server=10.1.25+maria-1~xenial \
-      php5.6 \
-      libapache2-mod-php
+# install packages (broken down for better caching via docker)
+RUN apt-get install -y apache2
+RUN apt-get install -y mariadb-server=10.1.25+maria-1~xenial
+RUN apt-get install -y php5.6 libapache2-mod-php5.6
+RUN apt-get install -y imagemagick php-imagick
+
+# define that the http port will be used
+EXPOSE 80
